@@ -7,11 +7,13 @@
 [![HACS validation](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hacs.yml?label=HACS&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hassfest.yml?label=Hassfest&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 
-Experimental, read-only Home Assistant custom integration for Datakom D500/D502-family generator controllers using the local TCP protocol on port 502.
+Experimental Home Assistant custom integration for Datakom D500/D502-family generator controllers using the local TCP protocol on port 502.
 
 ## Features
 
 - Local polling without Datakom cloud dependency
+- Real physical 128×64 controller LCD as a Home Assistant camera entity
+- Bundled Datakom Lovelace card with LCD and live controller status
 - Mains and generator voltages, currents and frequencies
 - Active, reactive and apparent power
 - Power factor per phase and total
@@ -24,7 +26,7 @@ Experimental, read-only Home Assistant custom integration for Datakom D500/D502-
 
 ## Safety
 
-This integration is **read-only**. It does not start or stop the generator, change operating mode, reset alarms or write any registers.
+Controller commands are not enabled yet. The current integration reads controller data and the physical LCD only. Remote keys and operating-mode commands will be added only after explicit safety checks and confirmation handling are implemented.
 
 The Rainbow/Silent watchdog is intentionally not included.
 
@@ -49,6 +51,40 @@ Recommended settings:
 - Unit ID: `1`
 - Polling interval: `10` seconds
 
+## Datakom Lovelace card
+
+The integration serves the bundled frontend module at:
+
+```text
+/datakom/datakom-card.js
+```
+
+Add it once under **Settings → Dashboards → Resources**:
+
+- URL: `/datakom/datakom-card.js`
+- Resource type: `JavaScript module`
+
+Then add a manual card:
+
+```yaml
+type: custom:datakom-card
+title: Datakom D502
+camera: camera.datakom_d502_lcd_display
+entity_prefix: sensor.datakom_d502_
+show_controls: false
+```
+
+The first version includes:
+
+- the actual physical LCD image,
+- online state,
+- operation status and unit mode,
+- engine-running and on-load state,
+- warning and shutdown indicators,
+- RPM, fuel, battery voltage and engine temperature.
+
+`show_controls: true` displays the planned control layout, but buttons remain disabled until safe remote-key support is completed.
+
 ## Supported and tested controller
 
 - Datakom D502 / D500 MK2
@@ -59,6 +95,6 @@ Other D-series controllers may work but are not yet tested.
 
 ## Status
 
-Current release: **0.2.0**
+Current development version: **0.6.0**
 
-This project is based on protocol analysis of Rainbow Plus traffic and direct testing against a real controller.
+This project is based on protocol analysis of Rainbow Plus traffic, static analysis of the Rainbow Plus application and direct testing against a real controller.

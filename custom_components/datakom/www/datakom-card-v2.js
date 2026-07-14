@@ -25,19 +25,22 @@ class DatakomCard extends HTMLElement {
     this.innerHTML = `
       <ha-card>
         <style>
-          .card{padding:16px}.header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+          :host{display:block;max-width:100%;overflow:hidden}
+          ha-card{overflow:hidden}
+          .card{padding:16px;box-sizing:border-box;max-width:100%;overflow:hidden}
+          .header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
           .title{font-size:20px;font-weight:600}.status{font-size:13px;opacity:.75;margin-top:2px}.online{color:var(--success-color,#4caf50);font-size:13px}.offline{color:var(--error-color,#f44336);font-size:13px}
-          .console{display:grid;grid-template-columns:minmax(230px,1fr) minmax(250px,1.2fr);gap:14px;align-items:stretch}
-          .lcd-frame{background:#111;border-radius:16px;padding:18px;display:flex;align-items:center;min-height:140px;box-sizing:border-box}
-          .lcd{display:block;width:100%;aspect-ratio:2/1;object-fit:contain;image-rendering:pixelated;border-radius:7px;background:#d6d8d2;opacity:1;transition:opacity .08s linear}
-          .panel{border:1px solid var(--divider-color);border-radius:14px;padding:12px;background:var(--secondary-background-color)}
-          .panel-top{display:grid;grid-template-columns:126px 1fr;gap:12px;align-items:center}.dpad{display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px);gap:5px;justify-content:center}
+          .console{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;min-width:0}
+          .lcd-frame{background:#d6d8d2;border:8px solid #111;border-radius:16px;padding:6px;display:flex;align-items:center;justify-content:center;min-height:120px;box-sizing:border-box;overflow:hidden;width:100%;min-width:0}
+          .lcd{display:block;width:100%;max-width:100%;aspect-ratio:2/1;object-fit:contain;image-rendering:pixelated;border-radius:4px;background:#d6d8d2;opacity:1;transition:opacity .08s linear}
+          .panel{border:1px solid var(--divider-color);border-radius:14px;padding:12px;background:var(--secondary-background-color);box-sizing:border-box;width:100%;min-width:0;overflow:hidden}
+          .panel-top{display:grid;grid-template-columns:minmax(110px,140px) minmax(0,1fr);gap:12px;align-items:center;min-width:0}.dpad{display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px);gap:5px;justify-content:center}
           .key{border:0;border-radius:50%;background:#252525;color:#fff;font-size:21px;box-shadow:0 2px 5px #0006;opacity:.8}.up{grid-column:2;grid-row:1}.left{grid-column:1;grid-row:2}.right{grid-column:3;grid-row:2}.down{grid-column:2;grid-row:3}
-          .flow{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:7px;align-items:start;text-align:center}.flow-item{font-size:11px;font-weight:600}.lamp{width:42px;height:42px;margin:0 auto 5px;border-radius:50%;background:#242424;position:relative;box-shadow:inset 0 0 0 2px #777,0 2px 4px #0005}.lamp:after{content:"";position:absolute;right:1px;top:1px;width:8px;height:8px;border-radius:50%;background:#aaa}.lamp.on:after{background:#55d86a;box-shadow:0 0 7px #55d86a}.load-line{height:4px;background:#333;margin:18px 0 14px;position:relative}
-          .modes{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:12px;text-align:center}.mode-circle{width:42px;height:42px;margin:auto;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;box-shadow:inset 0 0 0 2px #aaa,0 2px 4px #0005;filter:saturate(.55)}.mode-circle.active{filter:none;box-shadow:inset 0 0 0 2px #eee,0 0 9px currentColor}.test{background:#f2d900;color:#222}.run{background:#0aa54f}.man,.auto{background:#30262a}.stop{background:#e02920}.mode-label{font-size:11px;font-weight:600;margin-top:4px}
+          .flow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);gap:7px;align-items:start;text-align:center;min-width:0}.flow-item{font-size:11px;font-weight:600;white-space:nowrap}.lamp{width:42px;height:42px;margin:0 auto 5px;border-radius:50%;background:#242424;position:relative;box-shadow:inset 0 0 0 2px #777,0 2px 4px #0005}.lamp:after{content:"";position:absolute;right:1px;top:1px;width:8px;height:8px;border-radius:50%;background:#aaa}.lamp.on:after{background:#55d86a;box-shadow:0 0 7px #55d86a}.load-line{height:4px;background:#333;margin:18px 0 14px;position:relative}
+          .modes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:12px;text-align:center;min-width:0}.mode-circle{width:42px;height:42px;max-width:100%;margin:auto;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;box-shadow:inset 0 0 0 2px #aaa,0 2px 4px #0005;filter:saturate(.55)}.mode-circle.active{filter:none;box-shadow:inset 0 0 0 2px #eee,0 0 9px currentColor}.test{background:#f2d900;color:#222}.run{background:#0aa54f}.man,.auto{background:#30262a}.stop{background:#e02920}.mode-label{font-size:11px;font-weight:600;margin-top:4px;white-space:nowrap}
           .flags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.flag{padding:5px 9px;border-radius:999px;font-size:12px;background:var(--secondary-background-color)}.flag.on{background:color-mix(in srgb,var(--success-color,#4caf50) 24%,transparent)}.flag.warn{background:color-mix(in srgb,var(--warning-color,#ff9800) 28%,transparent)}.flag.alarm{background:color-mix(in srgb,var(--error-color,#f44336) 28%,transparent)}
           .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.metric{border-radius:12px;background:var(--secondary-background-color);padding:10px 12px;min-width:0}.label{font-size:12px;opacity:.7}.value{font-size:17px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-          @media(max-width:700px){.console{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lcd-frame{padding:14px}}
+          @media(max-width:500px){.card{padding:14px}.panel-top{grid-template-columns:1fr}.flow{margin-top:4px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lcd-frame{border-width:7px;padding:5px}.mode-circle{width:38px;height:38px}.mode-label{font-size:10px}}
         </style>
         <div class="card">
           <div class="header"><div><div class="title"></div><div class="status"></div></div><div class="connection"></div></div>
@@ -93,7 +96,7 @@ class DatakomCard extends HTMLElement {
   _guessPrefix(camera) { const id = camera.split(".")[1] || ""; return `sensor.${id.replace(/_lcd_display$/, "")}_`; }
   _state(id) { const e = this._hass?.states?.[id]; if (!e) return "—"; const u=e.attributes.unit_of_measurement; return `${e.state}${u?` ${u}`:""}`; }
   _on(id) { return this._hass?.states?.[id]?.state === "on"; }
-  getCardSize() { return 8; }
+  getCardSize() { return 10; }
   static getStubConfig() { return { camera:"camera.datakom_d502_lcd_display", title:"Datakom D502", entity_prefix:"sensor.datakom_d502_" }; }
 }
 if (!customElements.get("datakom-card")) customElements.define("datakom-card", DatakomCard);

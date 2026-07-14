@@ -3,6 +3,7 @@ from __future__ import annotations
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryNotReady
 
 from .api import DatakomApi
 from .const import (
@@ -25,7 +26,13 @@ async def async_setup_entry(
         entry.data.get(CONF_PORT, DEFAULT_PORT),
         entry.data.get(CONF_UNIT_ID, DEFAULT_UNIT_ID),
     )
-    await hass.async_add_executor_job(api.test_connection)
+
+    try:
+        await hass.async_add_executor_job(api.test_connection)
+    except (OSError, TimeoutError) as err:
+        raise ConfigEntryNotReady(
+            f"Datakom controller at {api.host}:{api.port} is unreachable"
+        ) from err
 
     coordinator = DatakomCoordinator(
         hass,

@@ -23,11 +23,7 @@ LCD_CACHE_SECONDS = 5.0
 
 
 def _read_lcd_registers(coordinator: DatakomCoordinator) -> tuple[int, ...]:
-    """Read the real 128x64 LCD framebuffer from the controller.
-
-    Rainbow Plus calls SetMBVars(10648, 64, 8), which means eight blocks of
-    64 registers: 512 registers / 1024 bytes in total.
-    """
+    """Read the real 128x64 LCD framebuffer from the controller."""
     values: list[int] = []
     with DatakomTcpClient(
         coordinator.api.host,
@@ -54,13 +50,7 @@ def _png_chunk(chunk_type: bytes, data: bytes) -> bytes:
 
 
 def _render_lcd_png(registers: tuple[int, ...]) -> bytes:
-    """Render the framebuffer exactly as Rainbow Plus does.
-
-    Rainbow Plus creates a 128x64 bitmap. The 512 registers are arranged as
-    eight pages of 64 registers. Each register contains two adjacent vertical
-    8-pixel columns: low byte first, then high byte. The controller's display
-    origin is bottom-left, therefore the Y axis is inverted.
-    """
+    """Render the framebuffer exactly as Rainbow Plus does."""
     if len(registers) != LCD_REGISTER_COUNT:
         raise ValueError(
             f"Expected {LCD_REGISTER_COUNT} LCD registers, got {len(registers)}"
@@ -122,18 +112,33 @@ class DatakomLcdCamera(DatakomEntity, Camera):
         self._image_lock = asyncio.Lock()
         self._cached_image: bytes | None = None
         self._cache_until = 0.0
+        self._seen_refresh_counter = coordinator.lcd_refresh_counter
 
     async def async_camera_image(
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
         """Return a cached LCD image and prevent concurrent controller reads."""
+        refresh_requested = (
+            self._seen_refresh_counter != self.coordinator.lcd_refresh_counter
+        )
         now = time.monotonic()
-        if self._cached_image is not None and now < self._cache_until:
+        if (
+            not refresh_requested
+            and self._cached_image is not None
+            and now < self._cache_until
+        ):
             return self._cached_image
 
         async with self._image_lock:
+            refresh_requested = (
+                self._seen_refresh_counter != self.coordinator.lcd_refresh_counter
+            )
             now = time.monotonic()
-            if self._cached_image is not None and now < self._cache_until:
+            if (
+                not refresh_requested
+                and self._cached_image is not None
+                and now < self._cache_until
+            ):
                 return self._cached_image
 
             try:
@@ -142,6 +147,7 @@ class DatakomLcdCamera(DatakomEntity, Camera):
                 )
                 self._cached_image = _render_lcd_png(registers)
                 self._cache_until = time.monotonic() + LCD_CACHE_SECONDS
+                self._seen_refresh_counter = self.coordinator.lcd_refresh_counter
             except (OSError, TimeoutError):
                 if self._cached_image is None:
                     raise

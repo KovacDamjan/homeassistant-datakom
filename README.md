@@ -9,6 +9,14 @@
 
 Experimental Home Assistant custom integration for Datakom D500/D502-family generator controllers using the local TCP protocol on port 502.
 
+## Datakom Remote Console
+
+<p align="center">
+  <img src="docs/images/remote-console.png" alt="Datakom Remote Console in Home Assistant" width="720">
+</p>
+
+The bundled console shows the controller's real physical LCD, live operating state, navigation keypad, status indicators and key generator measurements directly in Home Assistant.
+
 ## Features
 
 - Local polling without Datakom cloud dependency
@@ -53,7 +61,7 @@ Recommended settings:
 - Unit ID: `1`
 - Polling interval: `10` seconds
 
-## Datakom Remote Console
+## Lovelace card
 
 The frontend card is bundled with the integration and loaded automatically. No additional Lovelace JavaScript resource is required.
 

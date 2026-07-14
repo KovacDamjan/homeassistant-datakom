@@ -22,7 +22,7 @@ from .const import (
 from .coordinator import DatakomCoordinator
 
 CARD_URL = "/datakom/datakom-card-v2.js"
-CARD_MODULE_URL = f"{CARD_URL}?v=0.8.6"
+CARD_MODULE_URL = f"{CARD_URL}?v=0.9.0"
 CARD_REGISTERED = "card_registered"
 
 

@@ -21,8 +21,9 @@ The bundled console shows the controller's real physical LCD, live operating sta
 
 - Local polling without Datakom cloud dependency
 - Real physical 128×64 controller LCD as a Home Assistant camera entity
-- Automatically loaded Datakom Remote Console Lovelace card
-- Responsive console layout for desktop and mobile
+- Automatically loaded Lovelace cards with no separate JavaScript resource
+- Full Remote Console, standalone LCD card and compact status card
+- Responsive layouts for desktop and mobile
 - Visual navigation keypad with Up, Down, Left, Right, OK and ESC
 - Mains and generator voltages, currents and frequencies
 - Active, reactive and apparent power
@@ -61,11 +62,11 @@ Recommended settings:
 - Unit ID: `1`
 - Polling interval: `10` seconds
 
-## Lovelace card
+## Lovelace cards
 
-The frontend card is bundled with the integration and loaded automatically. No additional Lovelace JavaScript resource is required.
+All cards are bundled with the integration and loaded automatically. No additional Lovelace JavaScript resource is required.
 
-Add a manual card:
+### Full Remote Console
 
 ```yaml
 type: custom:datakom-card
@@ -84,7 +85,24 @@ entity_prefix: sensor.datakom_d502_
 refresh_interval: 10000
 ```
 
-The console includes:
+### Standalone LCD
+
+```yaml
+type: custom:datakom-lcd-card
+title: Datakom LCD
+camera: camera.datakom_d502_lcd_display
+refresh_interval: 5000
+```
+
+### Compact status card
+
+```yaml
+type: custom:datakom-status-card
+title: Datakom status
+entity_prefix: sensor.datakom_d502_
+```
+
+The full console includes:
 
 - the actual physical LCD image,
 - online/offline state,
@@ -105,7 +123,7 @@ Other D-series controllers may work but are not yet tested.
 
 ## Development status
 
-Current development version: **0.9.0**
+Current development version: **0.9.1**
 
 Planned next step: verified, read-only LCD navigation through the controller keypad protocol. Generator operating-mode commands are not a current priority.
 

@@ -12,7 +12,7 @@ Experimental Home Assistant custom integration for Datakom D500/D502-family gene
 ## Datakom Remote Console
 
 <p align="center">
-  <img src="docs/images/remote-console.png" alt="Datakom Remote Console in Home Assistant" width="720">
+  <img src="docs/images/remote-console.png?v=2" alt="Datakom Remote Console in Home Assistant" width="720">
 </p>
 
 The bundled console shows the controller's real physical LCD, live operating state, navigation keypad, status indicators and key generator measurements directly in Home Assistant.

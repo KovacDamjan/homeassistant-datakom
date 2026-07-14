@@ -13,6 +13,18 @@ from .entity import DatakomEntity
 from .registers import SENSOR_DEFINITIONS, SensorDefinition
 
 
+_UNAVAILABLE_TEMPERATURE_KEYS = {
+    "ambient_temperature",
+    "canopy_temperature",
+    "oil_temperature",
+}
+
+_POWER_FACTOR_KEYS = {
+    "genset_power_factor",
+    "mains_power_factor",
+}
+
+
 def _description(definition: SensorDefinition) -> SensorEntityDescription:
     return SensorEntityDescription(
         key=definition.key,
@@ -53,4 +65,18 @@ class DatakomSensor(DatakomEntity, SensorEntity):
 
     @property
     def native_value(self) -> Any:
-        return self.coordinator.data.get(self.entity_description.key)
+        key = self.entity_description.key
+        value = self.coordinator.data.get(key)
+
+        # Datakom uses 0x7FFF as an unavailable/not-configured analog value.
+        # The API currently scales temperatures by 0.1, producing 3276.7 °C.
+        if key in _UNAVAILABLE_TEMPERATURE_KEYS and value is not None:
+            if float(value) >= 3000:
+                return None
+
+        # D500/D502 power-factor registers use a scale of 0.001. The API's
+        # historic 0.01 scale therefore needs one additional division by ten.
+        if key in _POWER_FACTOR_KEYS and value is not None:
+            return float(value) / 10
+
+        return value

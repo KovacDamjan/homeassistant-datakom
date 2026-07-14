@@ -1,0 +1,23 @@
+{
+  "title": "Datakom D-Series",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Povezava s kontrolerjem Datakom",
+        "description": "Vnesi nastavitve povezave v lokalnem omrežju.",
+        "data": {
+          "host": "IP-naslov",
+          "port": "TCP-vrata",
+          "unit_id": "ID enote",
+          "scan_interval": "Interval osveževanja (sekunde)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Povezava s kontrolerjem ni uspela."
+    },
+    "abort": {
+      "already_configured": "Ta kontroler je že nastavljen."
+    }
+  }
+}

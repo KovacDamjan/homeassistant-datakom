@@ -73,8 +73,6 @@ SENSOR_DEFINITIONS: tuple[SensorDefinition, ...] = (
     SensorDefinition("fuel_level", "Fuel level", PERCENTAGE, None, SensorStateClass.MEASUREMENT),
     SensorDefinition("engine_rpm", "Engine RPM", "rpm", None, SensorStateClass.MEASUREMENT),
     SensorDefinition("engine_hours", "Engine hours", UnitOfTime.HOURS, SensorDeviceClass.DURATION, SensorStateClass.TOTAL_INCREASING),
-    SensorDefinition("hours_since_service", "Hours since service", UnitOfTime.HOURS, SensorDeviceClass.DURATION, SensorStateClass.MEASUREMENT),
-    SensorDefinition("days_since_service", "Days since service", UnitOfTime.DAYS, SensorDeviceClass.DURATION, SensorStateClass.MEASUREMENT),
     SensorDefinition("genset_runs", "Genset runs", None, None, SensorStateClass.TOTAL_INCREASING),
     SensorDefinition("genset_cranks", "Genset cranks", None, None, SensorStateClass.TOTAL_INCREASING),
     SensorDefinition("genset_on_load_count", "Genset on-load count", None, None, SensorStateClass.TOTAL_INCREASING),

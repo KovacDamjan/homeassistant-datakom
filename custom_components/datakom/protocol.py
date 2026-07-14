@@ -143,6 +143,45 @@ class DatakomTcpClient:
         registers = struct.unpack(f">{count}H", register_bytes)
         return ReadResult(address=address, registers=tuple(registers))
 
+    def write_single_register(
+        self, address: int, value: int, transaction_id: int = 0x06
+    ) -> None:
+        """Write one register using the Datakom Modbus/TCP-with-CRC format."""
+        if not 0 <= address <= 0xFFFF:
+            raise ValueError("address must fit in one register")
+        if not 0 <= value <= 0xFFFF:
+            raise ValueError("value must fit in one register")
+
+        core = struct.pack(">BBHH", self.unit_id, 0x06, address, value)
+        crc = struct.pack("<H", modbus_crc16(core))
+        request = bytes([0x06]) + struct.pack(">HH", address, value) + crc
+        body = self._exchange(transaction_id, request)
+
+        if len(body) != 7:
+            raise DatakomProtocolError(
+                f"Unexpected write response size: expected=7, actual={len(body)}"
+            )
+        if body[0] != 0x06:
+            raise DatakomProtocolError(
+                f"Unexpected write response function: {body[0]}"
+            )
+
+        response_address, response_value = struct.unpack(">HH", body[1:5])
+        if response_address != address or response_value != value:
+            raise DatakomProtocolError(
+                "Write response did not echo the requested address and value"
+            )
+
+        expected_crc = modbus_crc16(
+            struct.pack(">BBHH", self.unit_id, 0x06, address, value)
+        )
+        received_crc = struct.unpack("<H", body[5:7])[0]
+        if received_crc != expected_crc:
+            raise DatakomProtocolError(
+                f"Write CRC mismatch: expected=0x{expected_crc:04X}, "
+                f"received=0x{received_crc:04X}"
+            )
+
 
 def u32_low_word_first(registers: Iterable[int]) -> int:
     regs = tuple(registers)

@@ -28,7 +28,7 @@ class DatakomCard extends HTMLElement {
           .card{padding:16px}.header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
           .title{font-size:20px;font-weight:600}.status{font-size:13px;opacity:.75;margin-top:2px}.online{color:var(--success-color,#4caf50);font-size:13px}.offline{color:var(--error-color,#f44336);font-size:13px}
           .console{display:grid;grid-template-columns:minmax(230px,1fr) minmax(250px,1.2fr);gap:14px;align-items:stretch}
-          .lcd-frame{background:#111;border-radius:16px;padding:11px;display:flex;align-items:center;min-height:140px}
+          .lcd-frame{background:#111;border-radius:16px;padding:18px;display:flex;align-items:center;min-height:140px;box-sizing:border-box}
           .lcd{display:block;width:100%;aspect-ratio:2/1;object-fit:contain;image-rendering:pixelated;border-radius:7px;background:#d6d8d2;opacity:1;transition:opacity .08s linear}
           .panel{border:1px solid var(--divider-color);border-radius:14px;padding:12px;background:var(--secondary-background-color)}
           .panel-top{display:grid;grid-template-columns:126px 1fr;gap:12px;align-items:center}.dpad{display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px);gap:5px;justify-content:center}
@@ -37,7 +37,7 @@ class DatakomCard extends HTMLElement {
           .modes{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:12px;text-align:center}.mode-circle{width:42px;height:42px;margin:auto;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;box-shadow:inset 0 0 0 2px #aaa,0 2px 4px #0005;filter:saturate(.55)}.mode-circle.active{filter:none;box-shadow:inset 0 0 0 2px #eee,0 0 9px currentColor}.test{background:#f2d900;color:#222}.run{background:#0aa54f}.man,.auto{background:#30262a}.stop{background:#e02920}.mode-label{font-size:11px;font-weight:600;margin-top:4px}
           .flags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.flag{padding:5px 9px;border-radius:999px;font-size:12px;background:var(--secondary-background-color)}.flag.on{background:color-mix(in srgb,var(--success-color,#4caf50) 24%,transparent)}.flag.warn{background:color-mix(in srgb,var(--warning-color,#ff9800) 28%,transparent)}.flag.alarm{background:color-mix(in srgb,var(--error-color,#f44336) 28%,transparent)}
           .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.metric{border-radius:12px;background:var(--secondary-background-color);padding:10px 12px;min-width:0}.label{font-size:12px;opacity:.7}.value{font-size:17px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-          @media(max-width:700px){.console{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+          @media(max-width:700px){.console{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lcd-frame{padding:14px}}
         </style>
         <div class="card">
           <div class="header"><div><div class="title"></div><div class="status"></div></div><div class="connection"></div></div>

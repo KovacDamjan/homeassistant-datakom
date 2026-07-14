@@ -32,6 +32,11 @@ class DatakomCoordinator(DataUpdateCoordinator[dict]):
             update_interval=timedelta(seconds=scan_interval),
         )
         self.api = api
+        self.lcd_refresh_counter = 0
+
+    def request_lcd_refresh(self) -> None:
+        """Invalidate the LCD cache after a remote keypad press."""
+        self.lcd_refresh_counter += 1
 
     async def _async_update_data(self) -> dict:
         try:

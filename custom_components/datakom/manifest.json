@@ -5,6 +5,9 @@
     "@KovacDamjan"
   ],
   "config_flow": true,
+  "dependencies": [
+    "http"
+  ],
   "documentation": "https://github.com/KovacDamjan/homeassistant-datakom",
   "integration_type": "device",
   "iot_class": "local_polling",

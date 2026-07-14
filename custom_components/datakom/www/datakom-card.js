@@ -214,9 +214,11 @@ if (!customElements.get("datakom-card")) {
 }
 
 window.customCards = window.customCards || [];
-window.customCards.push({
-  type: "datakom-card",
-  name: "Datakom Remote Console",
-  description: "Live physical LCD and controller status for Datakom D-series.",
-  preview: false,
-});
+if (!window.customCards.some((card) => card.type === "datakom-card")) {
+  window.customCards.push({
+    type: "datakom-card",
+    name: "Datakom Remote Console",
+    description: "Live physical LCD and controller status for Datakom D-series.",
+    preview: false,
+  });
+}

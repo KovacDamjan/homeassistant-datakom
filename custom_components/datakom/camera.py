@@ -14,13 +14,17 @@ from .entity import DatakomEntity
 from .protocol import DatakomTcpClient
 
 LCD_ADDRESS = 10648
-LCD_REGISTER_COUNT = 64
+LCD_REGISTER_COUNT = 512
 LCD_WIDTH = 128
 LCD_HEIGHT = 64
 
 
 def _read_lcd_registers(coordinator: DatakomCoordinator) -> tuple[int, ...]:
-    """Read the real 128x64 LCD framebuffer from the controller."""
+    """Read the real 128x64 LCD framebuffer from the controller.
+
+    Rainbow Plus calls SetMBVars(10648, 64, 8), which means eight blocks of
+    64 registers: 512 registers / 1024 bytes in total.
+    """
     values: list[int] = []
     with DatakomTcpClient(
         coordinator.api.host,
@@ -49,9 +53,10 @@ def _png_chunk(chunk_type: bytes, data: bytes) -> bytes:
 def _render_lcd_png(registers: tuple[int, ...]) -> bytes:
     """Render the framebuffer exactly as Rainbow Plus does.
 
-    Each of the 64 registers contains two vertical 8-pixel columns. Registers
-    are arranged as 8 pages of 64 registers. The display origin used by the
-    controller is bottom-left, therefore the Y axis is inverted.
+    Rainbow Plus creates a 128x64 bitmap. The 512 registers are arranged as
+    eight pages of 64 registers. Each register contains two adjacent vertical
+    8-pixel columns: low byte first, then high byte. The controller's display
+    origin is bottom-left, therefore the Y axis is inverted.
     """
     if len(registers) != LCD_REGISTER_COUNT:
         raise ValueError(

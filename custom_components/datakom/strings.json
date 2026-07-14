@@ -1,0 +1,23 @@
+{
+  "title": "Datakom D-Series",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Datakom controller",
+        "description": "Enter the local network connection settings.",
+        "data": {
+          "host": "IP address",
+          "port": "TCP port",
+          "unit_id": "Unit ID",
+          "scan_interval": "Polling interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to the controller."
+    },
+    "abort": {
+      "already_configured": "This controller is already configured."
+    }
+  }
+}

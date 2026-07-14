@@ -1,5 +1,5 @@
 DOMAIN = "datakom"
-PLATFORMS = ["sensor", "binary_sensor", "camera"]
+PLATFORMS = ["sensor", "binary_sensor", "camera", "button"]
 
 CONF_UNIT_ID = "unit_id"
 CONF_SCAN_INTERVAL = "scan_interval"

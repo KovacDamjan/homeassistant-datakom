@@ -35,7 +35,12 @@ OPERATION_STATUS = {
     25: "stopping",
 }
 
-UNIT_MODE = {1: "stop", 2: "run", 4: "auto", 8: "test"}
+UNIT_MODE = {
+    1: "stop",
+    2: "run",
+    4: "auto",
+    8: "test",
+}
 
 
 def _firmware_version(raw: int) -> str:
@@ -59,7 +64,9 @@ class DatakomApi:
         self.device_info: DatakomDeviceInfo | None = None
 
     def test_connection(self) -> DatakomDeviceInfo:
-        with DatakomTcpClient(self.host, self.port, self.unit_id, timeout=5) as client:
+        with DatakomTcpClient(
+            self.host, self.port, self.unit_id, timeout=5
+        ) as client:
             regs = client.read_extended(10609, 7).registers
 
         info = DatakomDeviceInfo(
@@ -72,13 +79,30 @@ class DatakomApi:
 
     def read_all(self) -> dict[str, Any]:
         with DatakomTcpClient(self.host, self.port, self.unit_id, timeout=5) as client:
-            live = client.read_extended(10240, 164).registers
-            alarm_words = client.read_extended(10504, 96).registers
-            status = client.read_extended(10604, 12).registers
-            counters = client.read_extended(10616, 32).registers
-            led_io = client.read_extended(11160, 16).registers
-            energy = client.read_extended(11569, 10).registers
-            extra_diag = client.read_extended(11648, 32).registers
+            def read_block(
+                address: int, count: int, chunk_size: int = 36
+            ) -> tuple[int, ...]:
+                """Read a block in controller-sized chunks.
+
+                The tested D500 MK2/D502 returns at most 36 registers per
+                extended-read response, even when a larger count is requested.
+                """
+                values: list[int] = []
+                offset = 0
+                while offset < count:
+                    chunk_count = min(chunk_size, count - offset)
+                    result = client.read_extended(address + offset, chunk_count)
+                    values.extend(result.registers)
+                    offset += chunk_count
+                return tuple(values)
+
+            live = read_block(10240, 164)
+            alarm_words = read_block(10504, 96)
+            status = read_block(10604, 12)
+            counters = read_block(10616, 32)
+            led_io = read_block(11160, 16)
+            energy = read_block(11569, 10)
+            extra_diag = read_block(11648, 32)
 
         def live16(address: int) -> int:
             return live[address - 10240]
@@ -100,7 +124,9 @@ class DatakomApi:
 
         data: dict[str, Any] = {
             "operation_status_code": status[0],
-            "operation_status": OPERATION_STATUS.get(status[0], f"unknown_{status[0]}"),
+            "operation_status": OPERATION_STATUS.get(
+                status[0], f"unknown_{status[0]}"
+            ),
             "unit_mode_code": status[1],
             "unit_mode": UNIT_MODE.get(status[1], f"unknown_{status[1]}"),
             "device_identity": f"{status[5]:04X}",

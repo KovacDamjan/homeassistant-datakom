@@ -36,9 +36,9 @@ The Rainbow/Silent watchdog is intentionally not included.
 8. Open **Settings → Devices & services → Add integration**.
 9. Search for **Datakom D-Series**.
 
-Recommended settings for the tested controller:
+Recommended settings:
 
-- Host: `192.168.1.178`
+- Host: local IP address of your Datakom controller
 - Port: `502`
 - Unit ID: `1`
 - Polling interval: `10` seconds

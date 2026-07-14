@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import asyncio
 import struct
+import time
 import zlib
 
 from homeassistant.components.camera import Camera
@@ -17,6 +19,7 @@ LCD_ADDRESS = 10648
 LCD_REGISTER_COUNT = 512
 LCD_WIDTH = 128
 LCD_HEIGHT = 64
+LCD_CACHE_SECONDS = 5.0
 
 
 def _read_lcd_registers(coordinator: DatakomCoordinator) -> tuple[int, ...]:
@@ -116,11 +119,31 @@ class DatakomLcdCamera(DatakomEntity, Camera):
     def __init__(self, coordinator: DatakomCoordinator) -> None:
         DatakomEntity.__init__(self, coordinator, "lcd_display")
         Camera.__init__(self)
+        self._image_lock = asyncio.Lock()
+        self._cached_image: bytes | None = None
+        self._cache_until = 0.0
 
     async def async_camera_image(
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
-        registers = await self.hass.async_add_executor_job(
-            _read_lcd_registers, self.coordinator
-        )
-        return _render_lcd_png(registers)
+        """Return a cached LCD image and prevent concurrent controller reads."""
+        now = time.monotonic()
+        if self._cached_image is not None and now < self._cache_until:
+            return self._cached_image
+
+        async with self._image_lock:
+            now = time.monotonic()
+            if self._cached_image is not None and now < self._cache_until:
+                return self._cached_image
+
+            try:
+                registers = await self.hass.async_add_executor_job(
+                    _read_lcd_registers, self.coordinator
+                )
+                self._cached_image = _render_lcd_png(registers)
+                self._cache_until = time.monotonic() + LCD_CACHE_SECONDS
+            except (OSError, TimeoutError):
+                if self._cached_image is None:
+                    raise
+
+            return self._cached_image

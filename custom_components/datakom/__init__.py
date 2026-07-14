@@ -22,6 +22,7 @@ from .const import (
 from .coordinator import DatakomCoordinator
 
 CARD_URL = "/datakom/datakom-card.js"
+CARD_MODULE_URL = f"{CARD_URL}?v=0.8.1"
 CARD_REGISTERED = "card_registered"
 
 
@@ -35,7 +36,7 @@ async def _async_register_card(hass: HomeAssistant) -> None:
     await hass.http.async_register_static_paths(
         [StaticPathConfig(CARD_URL, str(card_path), cache_headers=False)]
     )
-    add_extra_js_url(hass, CARD_URL)
+    add_extra_js_url(hass, CARD_MODULE_URL)
     domain_data[CARD_REGISTERED] = True
 
 

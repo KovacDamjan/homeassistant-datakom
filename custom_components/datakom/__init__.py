@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT
@@ -25,7 +26,7 @@ CARD_REGISTERED = "card_registered"
 
 
 async def _async_register_card(hass: HomeAssistant) -> None:
-    """Expose the bundled Lovelace card through Home Assistant HTTP."""
+    """Expose and automatically load the bundled Lovelace card."""
     domain_data = hass.data.setdefault(DOMAIN, {})
     if domain_data.get(CARD_REGISTERED):
         return
@@ -34,6 +35,7 @@ async def _async_register_card(hass: HomeAssistant) -> None:
     await hass.http.async_register_static_paths(
         [StaticPathConfig(CARD_URL, str(card_path), cache_headers=False)]
     )
+    add_extra_js_url(hass, CARD_URL)
     domain_data[CARD_REGISTERED] = True
 
 

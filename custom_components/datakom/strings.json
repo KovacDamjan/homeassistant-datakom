@@ -19,5 +19,18 @@
     "abort": {
       "already_configured": "This controller is already configured."
     }
+  },
+  "entity": {
+    "button": {
+      "key_up": { "name": "Key up" },
+      "key_down": { "name": "Key down" },
+      "key_left": { "name": "Key left / ESC" },
+      "key_right": { "name": "Key right / OK" },
+      "key_ok": { "name": "Key OK" },
+      "key_esc": { "name": "Key ESC" }
+    },
+    "camera": {
+      "lcd_display": { "name": "LCD display" }
+    }
   }
 }

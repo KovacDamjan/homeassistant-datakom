@@ -27,12 +27,96 @@ def value(key: str) -> Callable[[dict[str, Any]], bool]:
 
 
 BINARY_SENSORS: tuple[DatakomBinarySensorDescription, ...] = (
-    DatakomBinarySensorDescription(key="engine_running", name="Engine running", device_class=BinarySensorDeviceClass.RUNNING, value_fn=value("engine_running")),
-    DatakomBinarySensorDescription(key="genset_on_load", name="Genset on load", device_class=BinarySensorDeviceClass.POWER, value_fn=value("genset_on_load")),
-    DatakomBinarySensorDescription(key="auto_mode", name="Auto mode", value_fn=value("auto_mode")),
-    DatakomBinarySensorDescription(key="warning_alarm_active", name="Warning alarm", device_class=BinarySensorDeviceClass.PROBLEM, value_fn=value("warning_alarm_active")),
-    DatakomBinarySensorDescription(key="shutdown_alarm_active", name="Shutdown alarm", device_class=BinarySensorDeviceClass.PROBLEM, value_fn=value("shutdown_alarm_active")),
-    DatakomBinarySensorDescription(key="loaddump_alarm_active", name="Load dump alarm", device_class=BinarySensorDeviceClass.PROBLEM, value_fn=value("loaddump_alarm_active")),
+    DatakomBinarySensorDescription(
+        key="engine_running",
+        name="Engine running",
+        device_class=BinarySensorDeviceClass.RUNNING,
+        value_fn=value("engine_running"),
+    ),
+    DatakomBinarySensorDescription(
+        key="genset_on_load",
+        name="Genset on load",
+        device_class=BinarySensorDeviceClass.POWER,
+        value_fn=value("genset_on_load"),
+    ),
+    DatakomBinarySensorDescription(
+        key="auto_mode",
+        name="Auto mode",
+        value_fn=value("auto_mode"),
+    ),
+    DatakomBinarySensorDescription(
+        key="warning_alarm_active",
+        name="Warning alarm",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        value_fn=value("warning_alarm_active"),
+    ),
+    DatakomBinarySensorDescription(
+        key="shutdown_alarm_active",
+        name="Shutdown alarm",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        value_fn=value("shutdown_alarm_active"),
+    ),
+    DatakomBinarySensorDescription(
+        key="loaddump_alarm_active",
+        name="Load dump alarm",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        value_fn=value("loaddump_alarm_active"),
+    ),
+    # Rainbow Plus reads the controller's digital-output status words. The
+    # first eight physical outputs are bits 0..7 of the first output word.
+    # On the tested D502 configuration outputs 1, 2 and 3 are assigned to
+    # Crank, Fuel and Coolant Heater respectively.
+    DatakomBinarySensorDescription(
+        key="digital_output_crank",
+        name="Digital output 1 - Crank",
+        device_class=BinarySensorDeviceClass.POWER,
+        icon="mdi:engine-start",
+        value_fn=value("digital_output_w0_b0"),
+    ),
+    DatakomBinarySensorDescription(
+        key="digital_output_fuel",
+        name="Digital output 2 - Fuel",
+        device_class=BinarySensorDeviceClass.POWER,
+        icon="mdi:fuel",
+        value_fn=value("digital_output_w0_b1"),
+    ),
+    DatakomBinarySensorDescription(
+        key="digital_output_coolant_heater",
+        name="Digital output 3 - Coolant heater",
+        device_class=BinarySensorDeviceClass.HEAT,
+        icon="mdi:radiator",
+        value_fn=value("digital_output_w0_b2"),
+    ),
+    DatakomBinarySensorDescription(
+        key="digital_output_4",
+        name="Digital output 4",
+        device_class=BinarySensorDeviceClass.POWER,
+        value_fn=value("digital_output_w0_b3"),
+    ),
+    DatakomBinarySensorDescription(
+        key="digital_output_5",
+        name="Digital output 5",
+        device_class=BinarySensorDeviceClass.POWER,
+        value_fn=value("digital_output_w0_b4"),
+    ),
+    DatakomBinarySensorDescription(
+        key="digital_output_6",
+        name="Digital output 6",
+        device_class=BinarySensorDeviceClass.POWER,
+        value_fn=value("digital_output_w0_b5"),
+    ),
+    DatakomBinarySensorDescription(
+        key="digital_output_7",
+        name="Digital output 7",
+        device_class=BinarySensorDeviceClass.POWER,
+        value_fn=value("digital_output_w0_b6"),
+    ),
+    DatakomBinarySensorDescription(
+        key="digital_output_8",
+        name="Digital output 8",
+        device_class=BinarySensorDeviceClass.POWER,
+        value_fn=value("digital_output_w0_b7"),
+    ),
 )
 
 

@@ -21,6 +21,22 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "engine_running": { "name": "Motor deluje" },
+      "genset_on_load": { "name": "Agregat na bremenu" },
+      "auto_mode": { "name": "Samodejni način" },
+      "warning_alarm": { "name": "Opozorilni alarm" },
+      "shutdown_alarm": { "name": "Alarm zaustavitve" },
+      "load_dump_alarm": { "name": "Alarm odklopa bremena" },
+      "digital_output_crank": { "name": "Digitalni izhod 1 - Zaganjač" },
+      "digital_output_fuel": { "name": "Digitalni izhod 2 - Gorivo" },
+      "digital_output_coolant_heater": { "name": "Digitalni izhod 3 - Grelec hladilne tekočine" },
+      "digital_output_4": { "name": "Digitalni izhod 4" },
+      "digital_output_5": { "name": "Digitalni izhod 5" },
+      "digital_output_6": { "name": "Digitalni izhod 6" },
+      "digital_output_7": { "name": "Digitalni izhod 7" },
+      "digital_output_8": { "name": "Digitalni izhod 8" }
+    },
     "button": {
       "key_up": { "name": "Tipka gor" },
       "key_down": { "name": "Tipka dol" },

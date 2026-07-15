@@ -19,5 +19,18 @@
     "abort": {
       "already_configured": "Ta kontroler je že nastavljen."
     }
+  },
+  "entity": {
+    "button": {
+      "key_up": { "name": "Tipka gor" },
+      "key_down": { "name": "Tipka dol" },
+      "key_left": { "name": "Tipka levo / ESC" },
+      "key_right": { "name": "Tipka desno / OK" },
+      "key_ok": { "name": "Tipka OK" },
+      "key_esc": { "name": "Tipka ESC" }
+    },
+    "camera": {
+      "lcd_display": { "name": "LCD-zaslon" }
+    }
   }
 }

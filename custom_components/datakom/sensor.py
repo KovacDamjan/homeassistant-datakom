@@ -25,7 +25,6 @@ _POWER_FACTOR_KEYS = {
 }
 
 
-
 def _description(definition: SensorDefinition) -> SensorEntityDescription:
     return SensorEntityDescription(
         key=definition.key,
@@ -34,7 +33,7 @@ def _description(definition: SensorDefinition) -> SensorEntityDescription:
         device_class=definition.device_class,
         state_class=definition.state_class,
         entity_registry_enabled_default=definition.enabled_by_default,
-        suggested_display_precision=(1 if definition.key == "battery_voltage" else None),
+        suggested_display_precision=(2 if definition.key == "battery_voltage" else None),
     )
 
 
@@ -81,10 +80,9 @@ class DatakomSensor(DatakomEntity, SensorEntity):
         if key in _POWER_FACTOR_KEYS and value is not None:
             return float(value) / 10
 
-        # Rainbow Plus presents the battery voltage with one decimal place.
-        # Return the same precision so Recorder stores 13.5 V instead of 13.46 V
-        # and Home Assistant consistently displays one decimal place.
+        # Keep the controller's hundredth-of-a-volt resolution. Recorder stores
+        # the value with two decimals and Home Assistant displays two decimals.
         if key == "battery_voltage" and value is not None:
-            return round(float(value), 1)
+            return round(float(value), 2)
 
         return value

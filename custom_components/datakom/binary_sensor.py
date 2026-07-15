@@ -83,7 +83,7 @@ BINARY_SENSORS: tuple[DatakomBinarySensorDescription, ...] = (
     DatakomBinarySensorDescription(
         key="digital_output_coolant_heater",
         name="Digital output 3 - Coolant heater",
-        device_class=BinarySensorDeviceClass.HEAT,
+        device_class=BinarySensorDeviceClass.POWER,
         icon="mdi:radiator",
         value_fn=value("digital_output_w0_b2"),
     ),

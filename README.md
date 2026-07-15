@@ -7,7 +7,7 @@
 [![HACS validation](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hacs.yml?label=HACS&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hassfest.yml?label=Hassfest&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 
-Home Assistant custom integration for Datakom D500/D502-family generator controllers using the local TCP protocol on port 502.
+Local Home Assistant integration for Datakom D500/D502-family generator controllers using the controller TCP interface on port 502.
 
 ## Datakom Remote Console
 
@@ -15,35 +15,40 @@ Home Assistant custom integration for Datakom D500/D502-family generator control
   <img src="docs/images/remote-console.png?v=2" alt="Datakom Remote Console in Home Assistant" width="720">
 </p>
 
-The bundled console shows the controller's real physical LCD, live operating state, working navigation keypad, status indicators and key generator measurements directly in Home Assistant.
+The bundled console shows the controller's physical LCD, live operating state, working navigation keypad, status indicators and key generator measurements directly in Home Assistant.
 
 ## Features
 
-- Local polling without Datakom cloud dependency
-- Real physical 128×64 controller LCD as a Home Assistant camera entity
-- Working Up, Down, Left, Right, OK and ESC remote LCD navigation
-- Automatically loaded Lovelace cards with no separate JavaScript resource
-- Full Remote Console, standalone LCD card and compact status card
-- English by default and automatic Slovenian UI when Home Assistant uses Slovenian
-- Responsive desktop and mobile layouts
-- Click-to-enlarge LCD popup
-- Animated mains/genset indicators and load-flow display
+### Monitoring
+
 - Mains and generator voltages, currents and frequencies
 - Active, reactive and apparent power
 - Power factor per phase and total
 - Battery voltage, RPM, oil pressure, temperatures and fuel level
 - Run, crank, on-load and engine-hour counters
-- Digital output states including Crank, Fuel and Coolant heater
+- Digital output states, including Crank, Fuel and Coolant heater
 - Mains, generator and export energy counters
 - Operating mode and detailed controller state
 - Shutdown, load-dump and warning status
-- Downloadable Home Assistant diagnostics with sensitive host data redacted
 
-## Safety
+### Remote console
 
-The integration reads controller data and supports LCD menu navigation only. Operating-mode commands such as RUN, STOP, AUTO and TEST remain intentionally disabled.
+- Physical 128×64 controller LCD as a Home Assistant camera entity
+- Working Up, Down, Left, Right, OK and ESC navigation
+- Automatic LCD refresh after a key press
+- Click-to-enlarge LCD popup
+- Animated mains, genset and load-flow indicators
+- Responsive desktop and mobile layout
 
-The Rainbow/Silent watchdog is intentionally not included.
+### Home Assistant
+
+- Local polling without a cloud dependency
+- Native configuration flow
+- HACS installation
+- Automatically loaded Lovelace cards without a separate JavaScript resource
+- Full Remote Console, standalone LCD card and compact status card
+- English by default and Slovenian when Home Assistant uses Slovenian
+- Downloadable diagnostics with sensitive host data redacted
 
 ## Installation with HACS
 
@@ -61,7 +66,7 @@ Click the **Add to HACS** button above, or add the repository manually:
 
 Recommended settings:
 
-- Host: local IP address of your Datakom controller
+- Host: local IP address of the Datakom controller
 - Port: `502`
 - Unit ID: `1`
 - Polling interval: `10` seconds
@@ -106,22 +111,53 @@ title: Datakom status
 entity_prefix: sensor.datakom_d502_
 ```
 
-## Supported and tested controller
+## Safety
 
-- Datakom D502 / D500 MK2
-- Hardware revision 6
-- Firmware 8.7
+The integration currently provides read-only monitoring, a live LCD display and remote LCD menu navigation.
 
-Other D-series controllers may work but are not yet tested.
+Operating-mode commands such as RUN, STOP, AUTO and TEST are disabled in the current release.
+
+## Roadmap
+
+### v1.1
+
+- Remote operating-mode control with appropriate safety confirmations
+- Alarm history
+- Event log
+
+### v1.2
+
+- Read-only controller configuration
+- Additional diagnostic entities
+- Digital input monitoring
+- Support for more Datakom D-Series controllers
+
+See [ROADMAP.md](ROADMAP.md) for additional details.
+
+## Supported controllers
+
+| Controller | Status |
+|---|---|
+| Datakom D500 MK2 | Tested |
+| Datakom D502 | Tested |
+| Other D-Series controllers | Expected to be compatible, but not yet tested |
+
+Tested hardware: revision 6, firmware 8.7.
 
 ## Diagnostics
 
-Open the Datakom integration in **Settings → Devices & services**, select the integration entry and use **Download diagnostics**. The report includes controller identity, firmware, hardware, coordinator state and current decoded values. The controller IP address is redacted.
+Open the Datakom integration in **Settings → Devices & services**, select the integration entry and use **Download diagnostics**. The report includes controller identity, firmware, hardware, coordinator state and current decoded values. Sensitive information, including the controller IP address, is automatically redacted.
 
-## Development status
+## Project status
 
-Current development version: **0.10.6**
+The integration is under active development and is suitable for everyday monitoring and remote LCD navigation of tested Datakom D-Series controllers.
 
-The remote LCD and navigation keypad are working. Generator operating-mode commands are intentionally outside the current scope.
+Bug reports and feature requests are welcome through GitHub Issues.
 
-This project is based on protocol analysis of Rainbow Plus traffic, static analysis of the Rainbow Plus application and direct testing against a real controller.
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+
+## License
+
+This project is licensed under the terms of the [MIT License](LICENSE).

@@ -24,6 +24,86 @@ _POWER_FACTOR_KEYS = {
     "mains_power_factor",
 }
 
+_TWO_DECIMAL_KEYS = {
+    "battery_voltage",
+    "oil_pressure",
+    "mains_power_factor",
+    "genset_power_factor",
+    "mains_current_l1",
+    "mains_current_l2",
+    "mains_current_l3",
+    "genset_current_l1",
+    "genset_current_l2",
+    "genset_current_l3",
+    "mains_active_power_l1",
+    "mains_active_power_l2",
+    "mains_active_power_l3",
+    "mains_active_power",
+    "genset_active_power_l1",
+    "genset_active_power_l2",
+    "genset_active_power_l3",
+    "genset_active_power",
+    "mains_reactive_power",
+    "genset_reactive_power",
+    "mains_apparent_power",
+    "genset_apparent_power",
+    "genset_active_energy",
+    "genset_inductive_energy",
+    "genset_capacitive_energy",
+    "mains_active_energy",
+    "mains_inductive_energy",
+    "mains_capacitive_energy",
+    "export_active_energy",
+}
+
+_ONE_DECIMAL_KEYS = {
+    "mains_voltage_l1",
+    "mains_voltage_l2",
+    "mains_voltage_l3",
+    "mains_voltage_l12",
+    "mains_voltage_l23",
+    "mains_voltage_l31",
+    "genset_voltage_l1",
+    "genset_voltage_l2",
+    "genset_voltage_l3",
+    "genset_voltage_l12",
+    "genset_voltage_l23",
+    "genset_voltage_l31",
+    "charge_input_voltage",
+    "mains_frequency",
+    "genset_frequency",
+    "engine_temperature",
+    "oil_temperature",
+    "canopy_temperature",
+    "ambient_temperature",
+    "fuel_level",
+    "engine_hours",
+    "fuel_counter",
+}
+
+_ICONS = {
+    "operation_status": "mdi:information-outline",
+    "unit_mode": "mdi:cog-outline",
+    "mains_reactive_power": "mdi:sine-wave",
+    "genset_reactive_power": "mdi:sine-wave",
+    "mains_apparent_power": "mdi:flash-outline",
+    "genset_apparent_power": "mdi:flash-outline",
+    "fuel_level": "mdi:fuel",
+    "engine_rpm": "mdi:engine",
+    "genset_runs": "mdi:counter",
+    "genset_cranks": "mdi:engine-start",
+    "genset_on_load_count": "mdi:counter",
+    "fuel_counter": "mdi:fuel",
+}
+
+
+def _suggested_precision(key: str) -> int | None:
+    if key in _TWO_DECIMAL_KEYS:
+        return 2
+    if key in _ONE_DECIMAL_KEYS:
+        return 1
+    return None
+
 
 def _description(definition: SensorDefinition) -> SensorEntityDescription:
     return SensorEntityDescription(
@@ -33,7 +113,8 @@ def _description(definition: SensorDefinition) -> SensorEntityDescription:
         device_class=definition.device_class,
         state_class=definition.state_class,
         entity_registry_enabled_default=definition.enabled_by_default,
-        suggested_display_precision=(2 if definition.key == "battery_voltage" else None),
+        suggested_display_precision=_suggested_precision(definition.key),
+        icon=_ICONS.get(definition.key),
     )
 
 

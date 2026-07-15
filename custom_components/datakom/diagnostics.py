@@ -17,12 +17,19 @@ async def async_get_config_entry_diagnostics(
     hass: HomeAssistant,
     entry: ConfigEntry,
 ) -> dict[str, Any]:
-    """Return diagnostics for a Datakom config entry."""
+    """Return safe diagnostics for a Datakom config entry."""
     coordinator: DatakomCoordinator = hass.data[DOMAIN][entry.entry_id]
     info = coordinator.api.device_info
 
     return {
-        "config_entry": async_redact_data(dict(entry.data), TO_REDACT),
+        "config_entry": async_redact_data(
+            {
+                "data": dict(entry.data),
+                "options": dict(entry.options),
+                "unique_id": entry.unique_id,
+            },
+            TO_REDACT,
+        ),
         "device": {
             "model": info.model if info else None,
             "hardware_version": info.hw_version if info else None,
@@ -30,6 +37,11 @@ async def async_get_config_entry_diagnostics(
         },
         "coordinator": {
             "last_update_success": coordinator.last_update_success,
+            "last_exception": (
+                str(coordinator.last_exception)
+                if coordinator.last_exception is not None
+                else None
+            ),
             "update_interval_seconds": (
                 coordinator.update_interval.total_seconds()
                 if coordinator.update_interval is not None

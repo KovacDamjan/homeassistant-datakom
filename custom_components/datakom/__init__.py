@@ -4,8 +4,9 @@ from pathlib import Path
 
 from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.components.http import StaticPathConfig
+from homeassistant.components.lovelace.const import LOVELACE_DATA, MODE_STORAGE
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_HOST, CONF_PORT
+from homeassistant.const import CONF_HOST, CONF_PORT, CONF_URL
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.typing import ConfigType
@@ -23,12 +24,48 @@ from .const import (
 from .coordinator import DatakomCoordinator
 
 CARD_URL = "/datakom/datakom-card-v2.js"
-CARD_MODULE_URL = f"{CARD_URL}?v=0.10.6"
+CARD_MODULE_URL = f"{CARD_URL}?v=0.10.8"
 CARD_REGISTERED = "card_registered"
 
 
+async def _async_register_lovelace_resource(hass: HomeAssistant) -> bool:
+    """Register the card as a real Lovelace module resource.
+
+    Lovelace resources are loaded before dashboards are rendered. This avoids
+    the hard-refresh race caused by dynamically injecting the card with
+    add_extra_js_url while Lovelace is already creating custom cards.
+    """
+    lovelace_data = hass.data.get(LOVELACE_DATA)
+    if lovelace_data is None or lovelace_data.resource_mode != MODE_STORAGE:
+        return False
+
+    resources = lovelace_data.resources
+    if not hasattr(resources, "async_create_item"):
+        return False
+
+    # Ensure storage resources have been loaded before inspecting them.
+    await resources.async_get_info()
+
+    for item in resources.async_items() or []:
+        url = str(item.get(CONF_URL, ""))
+        if not url.startswith(CARD_URL):
+            continue
+
+        if url != CARD_MODULE_URL or item.get("type") != "module":
+            await resources.async_update_item(
+                item["id"],
+                {"res_type": "module", CONF_URL: CARD_MODULE_URL},
+            )
+        return True
+
+    await resources.async_create_item(
+        {"res_type": "module", CONF_URL: CARD_MODULE_URL}
+    )
+    return True
+
+
 async def _async_register_card(hass: HomeAssistant) -> None:
-    """Expose and automatically load the bundled Lovelace card."""
+    """Expose and register the bundled Lovelace card."""
     domain_data = hass.data.setdefault(DOMAIN, {})
     if domain_data.get(CARD_REGISTERED):
         return
@@ -37,18 +74,18 @@ async def _async_register_card(hass: HomeAssistant) -> None:
     await hass.http.async_register_static_paths(
         [StaticPathConfig(CARD_URL, str(card_path), cache_headers=False)]
     )
-    add_extra_js_url(hass, CARD_MODULE_URL)
+
+    # Storage-mode Lovelace loads registered module resources before rendering
+    # the dashboard. YAML resource mode cannot be modified by an integration,
+    # so retain the legacy frontend injection only as a fallback there.
+    if not await _async_register_lovelace_resource(hass):
+        add_extra_js_url(hass, CARD_MODULE_URL)
+
     domain_data[CARD_REGISTERED] = True
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Register the bundled frontend before dashboards are rendered.
-
-    Registering the card only from async_setup_entry creates a browser startup
-    race: Lovelace can try to instantiate the custom card before the config
-    entry has finished setting up. Home Assistant then shows a transient
-    configuration error until the page is refreshed again.
-    """
+    """Register the bundled frontend before dashboards are rendered."""
     await _async_register_card(hass)
     return True
 

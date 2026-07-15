@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest an improvement or new capability
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: Describe the problem or workflow this feature would improve.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Explain how you expect the feature to work.
+    validations:
+      required: true
+  - type: input
+    id: controller
+    attributes:
+      label: Controller model and firmware
+      placeholder: Datakom D502, hardware 6, firmware 8.7
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: Add screenshots, register references or protocol findings when relevant.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: I understand that operating-mode and configuration writes require additional safety review.
+          required: true

@@ -33,6 +33,7 @@ The bundled console shows the controller's real physical LCD, live operating sta
 - Power factor per phase and total
 - Battery voltage, RPM, oil pressure, temperatures and fuel level
 - Run, crank, on-load and engine-hour counters
+- Digital output states including Crank, Fuel and Coolant heater
 - Mains, generator and export energy counters
 - Operating mode and detailed controller state
 - Shutdown, load-dump and warning status
@@ -119,7 +120,7 @@ Open the Datakom integration in **Settings → Devices & services**, select the 
 
 ## Development status
 
-Current development version: **0.10.0**
+Current development version: **0.10.6**
 
 The remote LCD and navigation keypad are working. Generator operating-mode commands are intentionally outside the current scope.
 

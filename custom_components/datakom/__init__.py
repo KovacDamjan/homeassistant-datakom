@@ -8,6 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers.typing import ConfigType
 
 from .api import DatakomApi
 from .const import (
@@ -22,7 +23,7 @@ from .const import (
 from .coordinator import DatakomCoordinator
 
 CARD_URL = "/datakom/datakom-card-v2.js"
-CARD_MODULE_URL = f"{CARD_URL}?v=0.10.0"
+CARD_MODULE_URL = f"{CARD_URL}?v=0.10.4"
 CARD_REGISTERED = "card_registered"
 
 
@@ -40,9 +41,22 @@ async def _async_register_card(hass: HomeAssistant) -> None:
     domain_data[CARD_REGISTERED] = True
 
 
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Register the bundled frontend before dashboards are rendered.
+
+    Registering the card only from async_setup_entry creates a browser startup
+    race: Lovelace can try to instantiate the custom card before the config
+    entry has finished setting up. Home Assistant then shows a transient
+    configuration error until the page is refreshed again.
+    """
+    await _async_register_card(hass)
+    return True
+
+
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry
 ) -> bool:
+    # Keep this call as a harmless fallback for reloads and older startup paths.
     await _async_register_card(hass)
 
     api = DatakomApi(

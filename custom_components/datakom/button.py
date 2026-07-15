@@ -18,19 +18,18 @@ KEYPAD_REGISTER = 0x2001
 @dataclass(frozen=True, slots=True)
 class KeyDefinition:
     key: str
-    name: str
     value: int
 
 
 KEYS: tuple[KeyDefinition, ...] = (
-    KeyDefinition("key_up", "Key up", 0x0200),
-    KeyDefinition("key_down", "Key down", 0x0400),
-    KeyDefinition("key_left", "Key left", 0x0100),
-    KeyDefinition("key_right", "Key right", 0x0080),
+    KeyDefinition("key_up", 0x0200),
+    KeyDefinition("key_down", 0x0400),
+    KeyDefinition("key_left", 0x0100),
+    KeyDefinition("key_right", 0x0080),
     # The D500/D502 keypad has four arrows. Rainbow Plus uses right as
     # confirmation/enter and left as escape/back, so these are aliases.
-    KeyDefinition("key_ok", "Key OK", 0x0080),
-    KeyDefinition("key_esc", "Key ESC", 0x0100),
+    KeyDefinition("key_ok", 0x0080),
+    KeyDefinition("key_esc", 0x0100),
 )
 
 
@@ -55,7 +54,7 @@ class DatakomKeyButton(DatakomEntity, ButtonEntity):
     ) -> None:
         super().__init__(coordinator, definition.key)
         self._definition = definition
-        self._attr_name = definition.name
+        self._attr_translation_key = definition.key
         self._attr_icon = {
             "key_up": "mdi:arrow-up-bold-circle",
             "key_down": "mdi:arrow-down-bold-circle",

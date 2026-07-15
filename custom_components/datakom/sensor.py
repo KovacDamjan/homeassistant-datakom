@@ -5,6 +5,7 @@ from typing import Any
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import DOMAIN
@@ -22,6 +23,12 @@ _UNAVAILABLE_TEMPERATURE_KEYS = {
 _POWER_FACTOR_KEYS = {
     "genset_power_factor",
     "mains_power_factor",
+}
+
+_DIAGNOSTIC_KEYS = {
+    "ambient_temperature",
+    "canopy_temperature",
+    "oil_temperature",
 }
 
 _TWO_DECIMAL_KEYS = {
@@ -108,11 +115,16 @@ def _suggested_precision(key: str) -> int | None:
 def _description(definition: SensorDefinition) -> SensorEntityDescription:
     return SensorEntityDescription(
         key=definition.key,
-        name=definition.name,
+        translation_key=definition.key,
         native_unit_of_measurement=definition.unit,
         device_class=definition.device_class,
         state_class=definition.state_class,
         entity_registry_enabled_default=definition.enabled_by_default,
+        entity_category=(
+            EntityCategory.DIAGNOSTIC
+            if definition.key in _DIAGNOSTIC_KEYS
+            else None
+        ),
         suggested_display_precision=_suggested_precision(definition.key),
         icon=_ICONS.get(definition.key),
     )

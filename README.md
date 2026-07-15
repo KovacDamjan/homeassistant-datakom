@@ -7,7 +7,7 @@
 [![HACS validation](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hacs.yml?label=HACS&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hassfest.yml?label=Hassfest&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 
-Experimental Home Assistant custom integration for Datakom D500/D502-family generator controllers using the local TCP protocol on port 502.
+Home Assistant custom integration for Datakom D500/D502-family generator controllers using the local TCP protocol on port 502.
 
 ## Datakom Remote Console
 
@@ -15,16 +15,19 @@ Experimental Home Assistant custom integration for Datakom D500/D502-family gene
   <img src="docs/images/remote-console.png?v=2" alt="Datakom Remote Console in Home Assistant" width="720">
 </p>
 
-The bundled console shows the controller's real physical LCD, live operating state, navigation keypad, status indicators and key generator measurements directly in Home Assistant.
+The bundled console shows the controller's real physical LCD, live operating state, working navigation keypad, status indicators and key generator measurements directly in Home Assistant.
 
 ## Features
 
 - Local polling without Datakom cloud dependency
 - Real physical 128×64 controller LCD as a Home Assistant camera entity
+- Working Up, Down, Left, Right, OK and ESC remote LCD navigation
 - Automatically loaded Lovelace cards with no separate JavaScript resource
 - Full Remote Console, standalone LCD card and compact status card
-- Responsive layouts for desktop and mobile
-- Visual navigation keypad with Up, Down, Left, Right, OK and ESC
+- English by default and automatic Slovenian UI when Home Assistant uses Slovenian
+- Responsive desktop and mobile layouts
+- Click-to-enlarge LCD popup
+- Animated mains/genset indicators and load-flow display
 - Mains and generator voltages, currents and frequencies
 - Active, reactive and apparent power
 - Power factor per phase and total
@@ -33,11 +36,11 @@ The bundled console shows the controller's real physical LCD, live operating sta
 - Mains, generator and export energy counters
 - Operating mode and detailed controller state
 - Shutdown, load-dump and warning status
-- Optional alarm bits, digital outputs, extension inputs and raw diagnostics
+- Downloadable Home Assistant diagnostics with sensitive host data redacted
 
 ## Safety
 
-The integration currently reads controller data and the physical LCD only. Navigation keys are displayed and animate locally, but do not yet send commands to the controller. Operating-mode commands such as RUN, STOP, AUTO and TEST remain intentionally disabled.
+The integration reads controller data and supports LCD menu navigation only. Operating-mode commands such as RUN, STOP, AUTO and TEST remain intentionally disabled.
 
 The Rainbow/Silent watchdog is intentionally not included.
 
@@ -102,17 +105,6 @@ title: Datakom status
 entity_prefix: sensor.datakom_d502_
 ```
 
-The full console includes:
-
-- the actual physical LCD image,
-- online/offline state,
-- operation status and unit mode,
-- engine-running and on-load state,
-- warning and shutdown indicators,
-- RPM, fuel, battery voltage and engine temperature,
-- a visual Up/Down/Left/Right/OK/ESC keypad,
-- TEST/RUN/MAN/AUTO/STOP state indicators.
-
 ## Supported and tested controller
 
 - Datakom D502 / D500 MK2
@@ -121,10 +113,14 @@ The full console includes:
 
 Other D-series controllers may work but are not yet tested.
 
+## Diagnostics
+
+Open the Datakom integration in **Settings → Devices & services**, select the integration entry and use **Download diagnostics**. The report includes controller identity, firmware, hardware, coordinator state and current decoded values. The controller IP address is redacted.
+
 ## Development status
 
-Current development version: **0.9.1**
+Current development version: **0.10.0**
 
-Planned next step: verified, read-only LCD navigation through the controller keypad protocol. Generator operating-mode commands are not a current priority.
+The remote LCD and navigation keypad are working. Generator operating-mode commands are intentionally outside the current scope.
 
 This project is based on protocol analysis of Rainbow Plus traffic, static analysis of the Rainbow Plus application and direct testing against a real controller.

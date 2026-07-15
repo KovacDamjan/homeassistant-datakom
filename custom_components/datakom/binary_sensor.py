@@ -10,6 +10,7 @@ from homeassistant.components.binary_sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import DOMAIN
@@ -29,36 +30,36 @@ def value(key: str) -> Callable[[dict[str, Any]], bool]:
 BINARY_SENSORS: tuple[DatakomBinarySensorDescription, ...] = (
     DatakomBinarySensorDescription(
         key="engine_running",
-        name="Engine running",
+        translation_key="engine_running",
         device_class=BinarySensorDeviceClass.RUNNING,
         value_fn=value("engine_running"),
     ),
     DatakomBinarySensorDescription(
         key="genset_on_load",
-        name="Genset on load",
+        translation_key="genset_on_load",
         device_class=BinarySensorDeviceClass.POWER,
         value_fn=value("genset_on_load"),
     ),
     DatakomBinarySensorDescription(
         key="auto_mode",
-        name="Auto mode",
+        translation_key="auto_mode",
         value_fn=value("auto_mode"),
     ),
     DatakomBinarySensorDescription(
         key="warning_alarm_active",
-        name="Warning alarm",
+        translation_key="warning_alarm",
         device_class=BinarySensorDeviceClass.PROBLEM,
         value_fn=value("warning_alarm_active"),
     ),
     DatakomBinarySensorDescription(
         key="shutdown_alarm_active",
-        name="Shutdown alarm",
+        translation_key="shutdown_alarm",
         device_class=BinarySensorDeviceClass.PROBLEM,
         value_fn=value("shutdown_alarm_active"),
     ),
     DatakomBinarySensorDescription(
         key="loaddump_alarm_active",
-        name="Load dump alarm",
+        translation_key="load_dump_alarm",
         device_class=BinarySensorDeviceClass.PROBLEM,
         value_fn=value("loaddump_alarm_active"),
     ),
@@ -68,53 +69,63 @@ BINARY_SENSORS: tuple[DatakomBinarySensorDescription, ...] = (
     # Crank, Fuel and Coolant Heater respectively.
     DatakomBinarySensorDescription(
         key="digital_output_crank",
-        name="Digital output 1 - Crank",
+        translation_key="digital_output_crank",
         device_class=BinarySensorDeviceClass.POWER,
         icon="mdi:engine-start",
         value_fn=value("digital_output_w0_b0"),
     ),
     DatakomBinarySensorDescription(
         key="digital_output_fuel",
-        name="Digital output 2 - Fuel",
+        translation_key="digital_output_fuel",
         device_class=BinarySensorDeviceClass.POWER,
         icon="mdi:fuel",
         value_fn=value("digital_output_w0_b1"),
     ),
     DatakomBinarySensorDescription(
         key="digital_output_coolant_heater",
-        name="Digital output 3 - Coolant heater",
+        translation_key="digital_output_coolant_heater",
         device_class=BinarySensorDeviceClass.POWER,
         icon="mdi:radiator",
         value_fn=value("digital_output_w0_b2"),
     ),
     DatakomBinarySensorDescription(
         key="digital_output_4",
-        name="Digital output 4",
+        translation_key="digital_output_4",
         device_class=BinarySensorDeviceClass.POWER,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=value("digital_output_w0_b3"),
     ),
     DatakomBinarySensorDescription(
         key="digital_output_5",
-        name="Digital output 5",
+        translation_key="digital_output_5",
         device_class=BinarySensorDeviceClass.POWER,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=value("digital_output_w0_b4"),
     ),
     DatakomBinarySensorDescription(
         key="digital_output_6",
-        name="Digital output 6",
+        translation_key="digital_output_6",
         device_class=BinarySensorDeviceClass.POWER,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=value("digital_output_w0_b5"),
     ),
     DatakomBinarySensorDescription(
         key="digital_output_7",
-        name="Digital output 7",
+        translation_key="digital_output_7",
         device_class=BinarySensorDeviceClass.POWER,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=value("digital_output_w0_b6"),
     ),
     DatakomBinarySensorDescription(
         key="digital_output_8",
-        name="Digital output 8",
+        translation_key="digital_output_8",
         device_class=BinarySensorDeviceClass.POWER,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=value("digital_output_w0_b7"),
     ),
 )

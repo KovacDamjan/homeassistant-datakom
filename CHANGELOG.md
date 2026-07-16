@@ -6,10 +6,25 @@ The project follows Semantic Versioning for stable releases.
 
 ## Unreleased
 
+### Fixed
+
+- Derived the bundled frontend cache version directly from the integration manifest.
+- Limited coordinator error handling to network, timeout and Datakom protocol failures so programming errors are no longer hidden as communication failures.
+- Added validation for transaction identifiers, MBAP lengths, response sizes and register request ranges.
+- Added validation that HACS release archives contain the required integration files.
+
+### Improved
+
+- Configured HACS to install the published `datakom.zip` release asset.
+- Hardened the automated GitHub release workflow and ensured releases are published as stable releases.
+- Improved startup handling for malformed or incomplete controller responses.
+- Added English and Slovenian names for all exposed sensors.
+
 ### Documentation
 
 - Restructured the README for a stable release.
 - Added a public roadmap and expanded contribution guidance.
+- Documented known limitations and the release validation process.
 
 ## 0.10.6
 

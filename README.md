@@ -6,6 +6,7 @@
 [![License](https://img.shields.io/github/license/KovacDamjan/homeassistant-datakom?style=flat-square)](LICENSE)
 [![HACS validation](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hacs.yml?label=HACS&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hassfest.yml?label=Hassfest&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
+[![Tests](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/tests.yml?label=Tests&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 
 Local Home Assistant integration for Datakom D500/D502-family generator controllers using the controller TCP interface on port 502.
 
@@ -52,7 +53,7 @@ The bundled console shows the controller's physical LCD, live operating state, w
 
 ## Installation with HACS
 
-Click the **Add to HACS** button above, or add the repository manually:
+Click the **Add to HACS** button above. Until the repository is included in the default HACS catalog, add it manually as a custom repository:
 
 1. Open HACS.
 2. Open **Integrations**.
@@ -113,9 +114,9 @@ entity_prefix: sensor.datakom_d502_
 
 ## Safety
 
-The integration currently provides read-only monitoring, a live LCD display and remote LCD menu navigation.
+The integration provides read-only monitoring, a live LCD display and remote LCD menu navigation.
 
-Operating-mode commands such as RUN, STOP, AUTO and TEST are disabled in the current release.
+Operating-mode commands such as RUN, STOP, AUTO and TEST are disabled in version 1.0.0.
 
 ## Known limitations
 
@@ -158,7 +159,7 @@ Open the Datakom integration in **Settings → Devices & services**, select the 
 
 ## Project status
 
-The integration is feature-complete for the planned 1.0 monitoring scope and is being stabilized for the first stable release. Everyday monitoring and remote LCD navigation are supported on the tested Datakom D500 MK2 and D502 controllers.
+Version 1.0.0 is the first stable release for the tested monitoring and remote LCD-navigation scope. Everyday monitoring is supported on tested Datakom D500 MK2 and D502 controllers.
 
 Bug reports and feature requests are welcome through GitHub Issues.
 

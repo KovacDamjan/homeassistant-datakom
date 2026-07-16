@@ -117,6 +117,14 @@ The integration currently provides read-only monitoring, a live LCD display and 
 
 Operating-mode commands such as RUN, STOP, AUTO and TEST are disabled in the current release.
 
+## Known limitations
+
+- Only Datakom D500 MK2 and D502 controllers have been tested directly.
+- Controller configuration, alarm history and event logs are not yet available.
+- RUN, STOP, AUTO and TEST operating-mode commands are intentionally disabled.
+- YAML-mode Lovelace installations use the Home Assistant frontend fallback because integrations cannot modify YAML-defined resources.
+- A controller that is offline is reported as unavailable until the next successful polling cycle.
+
 ## Roadmap
 
 ### v1.1
@@ -150,7 +158,7 @@ Open the Datakom integration in **Settings → Devices & services**, select the 
 
 ## Project status
 
-The integration is under active development and is suitable for everyday monitoring and remote LCD navigation of tested Datakom D-Series controllers.
+The integration is feature-complete for the planned 1.0 monitoring scope and is being stabilized for the first stable release. Everyday monitoring and remote LCD navigation are supported on the tested Datakom D500 MK2 and D502 controllers.
 
 Bug reports and feature requests are welcome through GitHub Issues.
 

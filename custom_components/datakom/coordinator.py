@@ -12,6 +12,7 @@ from homeassistant.helpers.update_coordinator import (
 
 from .api import DatakomApi
 from .const import DOMAIN
+from .protocol import DatakomProtocolError
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,5 +42,5 @@ class DatakomCoordinator(DataUpdateCoordinator[dict]):
     async def _async_update_data(self) -> dict:
         try:
             return await self.hass.async_add_executor_job(self.api.read_all)
-        except Exception as err:
+        except (OSError, TimeoutError, DatakomProtocolError) as err:
             raise UpdateFailed(f"Datakom communication failed: {err}") from err

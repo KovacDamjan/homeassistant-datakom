@@ -15,5 +15,5 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/KovacDamjan/homeassistant-datakom/issues",
   "requirements": [],
-  "version": "0.11.1"
+  "version": "0.11.2"
 }

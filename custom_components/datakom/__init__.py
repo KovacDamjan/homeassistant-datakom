@@ -10,6 +10,7 @@ from homeassistant.const import CONF_HOST, CONF_PORT, CONF_URL
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.typing import ConfigType
+from homeassistant.loader import async_get_integration
 
 from .api import DatakomApi
 from .const import (
@@ -22,13 +23,15 @@ from .const import (
     PLATFORMS,
 )
 from .coordinator import DatakomCoordinator
+from .protocol import DatakomProtocolError
 
 CARD_URL = "/datakom/datakom-card-v2.js"
-CARD_MODULE_URL = f"{CARD_URL}?v=0.11.1"
 CARD_REGISTERED = "card_registered"
 
 
-async def _async_register_lovelace_resource(hass: HomeAssistant) -> bool:
+async def _async_register_lovelace_resource(
+    hass: HomeAssistant, card_module_url: str
+) -> bool:
     """Register the card as a real Lovelace module resource.
 
     Lovelace resources are loaded before dashboards are rendered. This avoids
@@ -51,15 +54,15 @@ async def _async_register_lovelace_resource(hass: HomeAssistant) -> bool:
         if not url.startswith(CARD_URL):
             continue
 
-        if url != CARD_MODULE_URL or item.get("type") != "module":
+        if url != card_module_url or item.get("type") != "module":
             await resources.async_update_item(
                 item["id"],
-                {"res_type": "module", CONF_URL: CARD_MODULE_URL},
+                {"res_type": "module", CONF_URL: card_module_url},
             )
         return True
 
     await resources.async_create_item(
-        {"res_type": "module", CONF_URL: CARD_MODULE_URL}
+        {"res_type": "module", CONF_URL: card_module_url}
     )
     return True
 
@@ -70,6 +73,9 @@ async def _async_register_card(hass: HomeAssistant) -> None:
     if domain_data.get(CARD_REGISTERED):
         return
 
+    integration = await async_get_integration(hass, DOMAIN)
+    card_module_url = f"{CARD_URL}?v={integration.version or '0'}"
+
     card_path = Path(__file__).parent / "www" / "datakom-card-v2.js"
     await hass.http.async_register_static_paths(
         [StaticPathConfig(CARD_URL, str(card_path), cache_headers=False)]
@@ -78,8 +84,8 @@ async def _async_register_card(hass: HomeAssistant) -> None:
     # Storage-mode Lovelace loads registered module resources before rendering
     # the dashboard. YAML resource mode cannot be modified by an integration,
     # so retain the legacy frontend injection only as a fallback there.
-    if not await _async_register_lovelace_resource(hass):
-        add_extra_js_url(hass, CARD_MODULE_URL)
+    if not await _async_register_lovelace_resource(hass, card_module_url):
+        add_extra_js_url(hass, card_module_url)
 
     domain_data[CARD_REGISTERED] = True
 
@@ -104,7 +110,7 @@ async def async_setup_entry(
 
     try:
         await hass.async_add_executor_job(api.test_connection)
-    except (OSError, TimeoutError) as err:
+    except (OSError, TimeoutError, DatakomProtocolError) as err:
         raise ConfigEntryNotReady(
             f"Datakom controller at {api.host}:{api.port} is unreachable"
         ) from err

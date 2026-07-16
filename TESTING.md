@@ -4,10 +4,23 @@ Use this checklist before publishing a stable release.
 
 ## Automated checks
 
-- [ ] HACS validation passes.
+- [ ] Python unit tests pass.
+- [ ] HACS validation passes without errors or ignored checks.
 - [ ] Hassfest passes.
 - [ ] Release workflow validates that the tag matches `manifest.json`.
-- [ ] Release archive contains `manifest.json`, `__init__.py` and the bundled frontend files.
+- [ ] Release archive contains `manifest.json`, `__init__.py`, the bundled frontend files and translations.
+
+## HACS inclusion requirements
+
+- [x] Repository is public and hosted on GitHub.
+- [x] Repository works as a HACS custom repository.
+- [x] `hacs.json` contains the repository name and ZIP release configuration.
+- [x] Integration manifest contains domain, documentation, issue tracker, codeowners, name and version.
+- [x] Brand directory contains `custom_components/datakom/brand/icon.png`.
+- [ ] GitHub repository has a description.
+- [ ] GitHub repository has topics.
+- [ ] GitHub Issues are enabled.
+- [ ] A full GitHub Release is published after all actions pass.
 
 ## Installation and upgrade
 
@@ -21,7 +34,7 @@ Use this checklist before publishing a stable release.
 ## Controller communication
 
 - [ ] D500 MK2 connection succeeds with the default port and Unit ID.
-- [ ] D502 connection succeeds with the default port and Unit ID.
+- [ ] D502 connection succeeds with the default port and Unit ID, when available for testing.
 - [ ] All coordinator updates complete at the configured polling interval.
 - [ ] Disconnecting the controller makes entities unavailable.
 - [ ] Reconnecting the controller restores entities without restarting Home Assistant.
@@ -48,8 +61,9 @@ Use this checklist before publishing a stable release.
 
 ## Release approval
 
-- [ ] `CHANGELOG.md` describes all user-visible changes.
-- [ ] `README.md` matches current features and limitations.
-- [ ] `manifest.json` contains the intended release version.
-- [ ] The release tag uses the exact form `vX.Y.Z`.
+- [x] `CHANGELOG.md` describes version 1.0.0.
+- [x] `README.md` matches current features and limitations.
+- [x] `manifest.json` contains version `1.0.0`.
+- [ ] The release tag is exactly `v1.0.0`.
 - [ ] The GitHub release is neither a draft nor a prerelease.
+- [ ] The release contains `datakom.zip`.

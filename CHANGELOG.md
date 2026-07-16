@@ -6,25 +6,40 @@ The project follows Semantic Versioning for stable releases.
 
 ## Unreleased
 
+## 1.0.0 - 2026-07-16
+
+### Added
+
+- Stable local monitoring for tested Datakom D500 MK2 and D502 controllers.
+- Native Home Assistant configuration flow and configurable polling interval.
+- Electrical, engine, energy, counter, operating-state and alarm entities.
+- Live 128×64 controller LCD camera entity.
+- Remote LCD navigation using Up, Down, Left, Right, OK and ESC controls.
+- Bundled full Remote Console, standalone LCD and compact status Lovelace cards.
+- English and Slovenian translations.
+- Downloadable diagnostics with sensitive host information redacted.
+- HACS brand icon and release ZIP support.
+- Protocol unit tests and automated GitHub Actions validation.
+
 ### Fixed
 
 - Derived the bundled frontend cache version directly from the integration manifest.
 - Limited coordinator error handling to network, timeout and Datakom protocol failures so programming errors are no longer hidden as communication failures.
 - Added validation for transaction identifiers, MBAP lengths, response sizes and register request ranges.
 - Added validation that HACS release archives contain the required integration files.
+- Improved startup handling for malformed or incomplete controller responses.
 
 ### Improved
 
 - Configured HACS to install the published `datakom.zip` release asset.
 - Hardened the automated GitHub release workflow and ensured releases are published as stable releases.
-- Improved startup handling for malformed or incomplete controller responses.
 - Added English and Slovenian names for all exposed sensors.
+- Documented supported controllers, known limitations, safety boundaries and release validation.
 
-### Documentation
+### Safety
 
-- Restructured the README for a stable release.
-- Added a public roadmap and expanded contribution guidance.
-- Documented known limitations and the release validation process.
+- RUN, STOP, AUTO and TEST operating-mode commands remain intentionally disabled.
+- Remote interaction is limited to LCD menu navigation in this release.
 
 ## 0.10.6
 

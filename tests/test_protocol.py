@@ -49,13 +49,13 @@ class ProtocolHelpersTest(unittest.TestCase):
 
 class ExtendedReadValidationTest(unittest.TestCase):
     def test_valid_response(self) -> None:
-        client = FakeClient(bytes.fromhex("4304000100020000"))
+        client = FakeClient(bytes.fromhex("4306000100020000"))
         result = client.read_extended(100, 2)
         self.assertEqual(result.address, 100)
         self.assertEqual(result.registers, (1, 2))
 
     def test_rejects_unexpected_function(self) -> None:
-        client = FakeClient(bytes.fromhex("0304000100020000"))
+        client = FakeClient(bytes.fromhex("0306000100020000"))
         with self.assertRaises(protocol.DatakomProtocolError):
             client.read_extended(100, 2)
 
@@ -65,7 +65,7 @@ class ExtendedReadValidationTest(unittest.TestCase):
             client.read_extended(100, 2)
 
     def test_rejects_short_payload(self) -> None:
-        client = FakeClient(bytes.fromhex("430400010000"))
+        client = FakeClient(bytes.fromhex("43060001"))
         with self.assertRaises(protocol.DatakomProtocolError):
             client.read_extended(100, 2)
 

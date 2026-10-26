@@ -6,6 +6,8 @@ The project follows Semantic Versioning for stable releases.
 
 ## Unreleased
 
+## 1.0.1 - 2026-10-26
+
 ### Removed
 
 - Removed the obsolete legacy `www/datakom-card.js` frontend file; the integration serves `datakom-card-v2.js`.

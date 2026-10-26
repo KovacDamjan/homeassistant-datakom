@@ -53,17 +53,17 @@ The bundled console shows the controller's physical LCD, live operating state, w
 
 ## Installation with HACS
 
-Click the **Add to HACS** button above. Until the repository is included in the default HACS catalog, add it manually as a custom repository:
+The integration is available in the default HACS catalog.
 
 1. Open HACS.
 2. Open **Integrations**.
-3. Open the menu and choose **Custom repositories**.
-4. Add `https://github.com/KovacDamjan/homeassistant-datakom`.
-5. Select category **Integration**.
-6. Install **Datakom D-Series**.
-7. Restart Home Assistant.
-8. Open **Settings → Devices & services → Add integration**.
-9. Search for **Datakom D-Series**.
+3. Search for **Datakom D-Series**.
+4. Install the integration.
+5. Restart Home Assistant.
+6. Open **Settings → Devices & services → Add integration**.
+7. Search for **Datakom D-Series**.
+
+You can also use the **Add to HACS** button above.
 
 Recommended settings:
 

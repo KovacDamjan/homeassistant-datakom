@@ -3,7 +3,7 @@
 [![Open your Home Assistant instance and add this repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=KovacDamjan&repository=homeassistant-datakom&category=integration)
 
 [![GitHub Release](https://img.shields.io/github/v/release/KovacDamjan/homeassistant-datakom?style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/releases)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/blob/main/LICENSE)
 [![HACS validation](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hacs.yml?label=HACS&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 [![Hassfest](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/hassfest.yml?label=Hassfest&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)
 [![Tests](https://img.shields.io/github/actions/workflow/status/KovacDamjan/homeassistant-datakom/tests.yml?label=Tests&style=flat-square)](https://github.com/KovacDamjan/homeassistant-datakom/actions)

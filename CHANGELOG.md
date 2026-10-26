@@ -6,6 +6,15 @@ The project follows Semantic Versioning for stable releases.
 
 ## Unreleased
 
+### Removed
+
+- Removed the obsolete legacy `www/datakom-card.js` frontend file; the integration serves `datakom-card-v2.js`.
+
+### Documentation
+
+- Updated HACS installation instructions now that Datakom D-Series is included in the default HACS catalog.
+- Fixed README image rendering for the HACS repository view.
+
 ## 1.0.0 - 2026-07-16
 
 ### Added

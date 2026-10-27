@@ -13,7 +13,7 @@ Local Home Assistant integration for Datakom D500/D502-family generator controll
 ## Datakom Remote Console
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/KovacDamjan/homeassistant-datakom/main/docs/images/remote-console.png" alt="Datakom Remote Console in Home Assistant" width="720">
+  <img src="https://raw.githubusercontent.com/KovacDamjan/homeassistant-datakom/main/docs/images/remote-console.png?v=3" alt="Datakom Remote Console in Home Assistant" width="720">
 </p>
 
 The bundled console shows the controller's physical LCD, live operating state, working navigation keypad, status indicators and key generator measurements directly in Home Assistant.

@@ -6,6 +6,13 @@ The project follows Semantic Versioning for stable releases.
 
 ## Unreleased
 
+## 1.0.2 - 2026-10-27
+
+### Documentation
+
+- Updated the HACS/README remote console screenshot to the new English version.
+- Fixed the MIT license badge rendering in the HACS repository view.
+
 ## 1.0.1 - 2026-10-26
 
 ### Removed
